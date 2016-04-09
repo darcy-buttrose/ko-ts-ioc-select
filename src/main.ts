@@ -1,9 +1,9 @@
 /// <reference path="../typings/tsd.d.ts" />
 import * as ko from "knockout";
-import {HomePageViewModel} from "./Components/Pages/Home/HomePageViewModel"
+import {registerHomePageViewModel} from "./Components/Pages/Home/register"
 import $ from "jquery";
 
 $(() => {
-    HomePageViewModel.register();
+    registerHomePageViewModel();
     ko.applyBindings();
 });

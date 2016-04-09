@@ -1,22 +1,29 @@
 /**
  * Created by Darcy on 1/04/2016.
  */
-/// <reference path="../../../../typings/tsd.d.ts" />
+/// <reference path="../../../typings.d.ts" />
 
 import * as ko from "knockout";
-import componentTemplate from "text!./home-page.tmpl.html";
 import {publish} from "../../../Intents/Intent";
 import {Keys} from "../../../Intents/Keys";
 import {Map} from "immutable";
 import state$ from "../../../Models/Model";
+import {inject, injectable} from "inversify";
+import {INameService} from "../../../Services/INameService";
+import {IHomePageViewModel} from "./IHomePageViewModel"
 
-export class HomePageViewModel {
+@injectable()
+export class HomePageViewModel implements IHomePageViewModel {
     title: string;
     name: KnockoutObservable<string>;
     display : KnockoutObservable<string>;
+    names: KnockoutObservable<Array<string>>;
 
-    constructor () {
+    constructor (
+        @inject("INameService") nameService: INameService
+    ) {
         this.title = "Hello";
+        this.names = ko.observable(nameService.getNames());
         this.name = ko.observable('Darcy');
         this.display = ko.observable(this.name());
         //here
@@ -30,12 +37,5 @@ export class HomePageViewModel {
             key: Keys.ChangeName,
             payload: Map({name:this.name()})
         })
-    }
-
-    static register () {
-        ko.components.register('home-page',{
-           viewModel: HomePageViewModel,
-            template: componentTemplate
-        });
     }
 }

@@ -1,5 +1,8 @@
 <div>
     <label data-bind="text: title"></label>
+    <ul data-bind="foreach: names">
+        <li data-bind="text: $data"/>
+    </ul>
     <input type="text" data-bind="textInput: name" />
     <hr/>
     <h1>Hello <span data-bind="text: name"></span></h1>
