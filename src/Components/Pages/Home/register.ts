@@ -9,7 +9,9 @@ export function registerHomePageViewModel() {
     ko.components.register('home-page',{
         viewModel: {
             createViewModel: (params,componentInformation) : IHomePageViewModel => {
-                return kernel.get<IHomePageViewModel>("IHomePageViewModel");
+                var viewModel = kernel.get<IHomePageViewModel>("IHomePageViewModel");
+                viewModel.init(params);
+                return viewModel;
             }
         },
         template: componentTemplate
