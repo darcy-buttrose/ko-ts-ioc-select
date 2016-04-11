@@ -4,7 +4,7 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 import {Keys} from "./Keys";
 import {IAction} from "./IAction";
-import {Subject} from "@reactivex/Rxjs";
+import {Observable} from "../libs/rxjs/rx.js";
 import {Map} from "immutable";
 
 var subject: Subject<IAction> = new Subject<IAction>();

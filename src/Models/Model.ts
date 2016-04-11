@@ -6,7 +6,7 @@
 import {Keys} from "../Intents/Keys";
 import {IAction} from "../Intents/IAction"
 import {intent$} from "../Intents/Intent";
-import {Observable} from "@reactivex/rxjs";
+import {Observable} from "../libs/rxjs/rx.js";
 import {Map,List} from "immutable";
 
 var initialState: Map<string,string> = Map<string,string>();

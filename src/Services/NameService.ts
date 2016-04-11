@@ -1,5 +1,5 @@
 /// <reference path="../typings.d.ts" />
-import {injectable} from "inversify";
+import {injectable} from "../libs/inversify/inversify.js";
 import {INameService} from "./INameService";
 
 @injectable()
