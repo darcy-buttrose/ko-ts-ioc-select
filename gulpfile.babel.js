@@ -37,10 +37,32 @@ gulp.task('moveimmutable',[],function() {
         .pipe(gulp.dest('./build/cjs/libs/immutable'));
 });
 
-gulp.task('movelibs',['moveinversify','moverxjs','moveknockout','moveimmutable','movereflect'])
+gulp.task('movetext',[],function() {
+    return gulp.src(['./node_modules/text/**/*.js'])
+        .pipe(gulp.dest('./src/libs/text'))
+        .pipe(gulp.dest('./build/amd/libs/text'))
+        .pipe(gulp.dest('./build/cjs/libs/text'));
+});
+
+gulp.task('movejquery',[],function() {
+    return gulp.src(['./node_modules/jquery/dist/**/*.js'])
+        .pipe(gulp.dest('./src/libs/jquery'))
+        .pipe(gulp.dest('./build/amd/libs/jquery'))
+        .pipe(gulp.dest('./build/cjs/libs/jquery'));
+});
+
+gulp.task('movelibs',['moveinversify','moverxjs','moveknockout','moveimmutable','movereflect','movetext','movejquery'])
 
 gulp.task('compile-cjs', ['movelibs'], () => {
-    return gulp.src(['./src/**/*.[tj]s*','./src/**/*.spec.ts*','!./src/libs/immutable/**/*','!./src/libs/knockout/**/*','!./src/libs/reflect-metadata/**/*'])
+    return gulp.src([
+            './src/**/*.[tj]s*',
+            './src/**/*.spec.ts*',
+            '!./src/libs/immutable/**/*',
+            '!./src/libs/knockout/**/*',
+            '!./src/libs/reflect-metadata/**/*',
+            '!./src/libs/text/**/*',
+            '!./src/libs/jquery/**/*'
+        ])
         .pipe(typescript(typescript.createProject('./tsconfig.json')))
         .pipe(babel({
             plugins: [
@@ -54,7 +76,15 @@ gulp.task('compile-cjs', ['movelibs'], () => {
 });
 
 gulp.task('compile-amd', ['movelibs'], () => {
-    return gulp.src(['./src/**/*.[tj]s*','./src/**/*.spec.ts*','!./src/libs/immutable/**/*','!./src/libs/knockout/**/*','!./src/libs/reflect-metadata/**/*'])
+    return gulp.src([
+            './src/**/*.[tj]s*',
+            './src/**/*.spec.ts*',
+            '!./src/libs/immutable/**/*',
+            '!./src/libs/knockout/**/*',
+            '!./src/libs/reflect-metadata/**/*',
+            '!./src/libs/text/**/*',
+            '!./src/libs/jquery/**/*'
+        ])
         .pipe(typescript(typescript.createProject('./tsconfig.json')))
         .pipe(babel({
             plugins: [
@@ -71,7 +101,8 @@ gulp.task('compile',['compile-amd','compile-cjs']);
 
 gulp.task('movestatic', () => {
     return gulp.src('./src/**/*.html')
-        .pipe(gulp.dest('./build/cjs'));
+        .pipe(gulp.dest('./build/cjs'))
+        .pipe(gulp.dest('./build/amd'));
 });
 
 gulp.task('test',['compile'], () => {
@@ -92,13 +123,15 @@ gulp.task('package-wpack', ['compile-cjs','movestatic'],function() {
         .pipe(gulp.dest('./dist/wpack'));
 });
 
-gulp.task('package-rjs', ['compile-amd'], () => {
+gulp.task('package-rjs', ['compile-amd','movestatic'], () => {
     return rjs({
             baseUrl: './build/amd/',
             paths: {
                 "knockout": "./libs/knockout/knockout-latest.debug",
                 "immutable": "./libs/immutable/immutable",
-                "reflect-metadata": "./libs/reflect-metadata/reflect"
+                "reflect-metadata": "./libs/reflect-metadata/reflect",
+                "text": "./libs/text/text",
+                "jquery": "./libs/jquery/jquery"
             },
             include: [
                 'main.js'
