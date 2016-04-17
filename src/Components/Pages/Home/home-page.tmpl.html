@@ -1,5 +1,7 @@
 <div>
     <label data-bind="text: title"></label>
+    <input type="checkbox" data-bind="checked: swap" />
+    <select data-bind="options: names, optionsText: function(item) { return `n: ${item}` }"></select>
     <ul data-bind="foreach: names">
         <li data-bind="text: $data"/>
     </ul>

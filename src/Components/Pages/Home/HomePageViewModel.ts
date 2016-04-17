@@ -17,8 +17,10 @@ export class HomePageViewModel implements IHomePageViewModel {
     title: string;
     name: KnockoutObservable<string>;
     display : KnockoutObservable<string>;
-    names: KnockoutObservable<Array<string>>;
+    names: KnockoutObservableArray<string>;
     nameService: INameService;
+    swap: KnockoutObservable<boolean>;
+
 
     constructor (
         @inject("INameService") nameService: INameService
@@ -28,9 +30,17 @@ export class HomePageViewModel implements IHomePageViewModel {
 
     public init(params: {title: string, initName: string}) {
         this.title = params.title;
-        this.names = ko.observable(this.nameService.getNames());
+        this.names = ko.observableArray(this.nameService.getNames());
         this.name = ko.observable(params.initName);
         this.display = ko.observable(this.name());
+        this.swap = ko.observable(false);
+        this.swap.subscribe((checked) => {
+            if (checked) {
+                this.names(["hello","there"]);
+            } else {
+                this.names(this.nameService.getNames());
+            }
+        })
         //here
         state$.subscribe(state => {
            this.display(state.get('name'));
