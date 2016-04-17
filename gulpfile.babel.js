@@ -6,62 +6,10 @@ import webpack from 'webpack-stream';
 import rjs from 'gulp-requirejs';
 import 'babel-polyfill';
 
-gulp.task('moveinversify',[],function() {
-    return gulp.src(['./node_modules/inversify/es/**/*.js'])
-        .pipe(gulp.dest('./src/libs/inversify'));
-});
-
-gulp.task('moverxjs',[],function() {
-    return gulp.src(['./node_modules/@reactivex/rxjs/dist/es6/**/*.js'])
-        .pipe(gulp.dest('./src/libs/rxjs'));
-});
-
-gulp.task('moveknockout',[],function() {
-    return gulp.src(['./node_modules/knockout/build/output/**/*.js'])
-        .pipe(gulp.dest('./src/libs/knockout'))
-        .pipe(gulp.dest('./build/cjs/libs/knockout'))
-        .pipe(gulp.dest('./build/amd/libs/knockout'));
-});
-
-gulp.task('movereflect',[],function() {
-    return gulp.src(['./node_modules/reflect-metadata/reflect.js'])
-        .pipe(gulp.dest('./src/libs/reflect-metadata'))
-        .pipe(gulp.dest('./build/cjs/libs/reflect-metadata'))
-        .pipe(gulp.dest('./build/amd/libs/reflect-metadata'));
-});
-
-gulp.task('moveimmutable',[],function() {
-    return gulp.src(['./node_modules/immutable/dist/**/*.js'])
-        .pipe(gulp.dest('./src/libs/immutable'))
-        .pipe(gulp.dest('./build/amd/libs/immutable'))
-        .pipe(gulp.dest('./build/cjs/libs/immutable'));
-});
-
-gulp.task('movetext',[],function() {
-    return gulp.src(['./node_modules/text/**/*.js'])
-        .pipe(gulp.dest('./src/libs/text'))
-        .pipe(gulp.dest('./build/amd/libs/text'))
-        .pipe(gulp.dest('./build/cjs/libs/text'));
-});
-
-gulp.task('movejquery',[],function() {
-    return gulp.src(['./node_modules/jquery/dist/**/*.js'])
-        .pipe(gulp.dest('./src/libs/jquery'))
-        .pipe(gulp.dest('./build/amd/libs/jquery'))
-        .pipe(gulp.dest('./build/cjs/libs/jquery'));
-});
-
-gulp.task('movelibs',['moveinversify','moverxjs','moveknockout','moveimmutable','movereflect','movetext','movejquery'])
-
-gulp.task('compile-cjs', ['movelibs'], () => {
+gulp.task('compile-cjs', [], () => {
     return gulp.src([
             './src/**/*.[tj]s*',
-            './src/**/*.spec.ts*',
-            '!./src/libs/immutable/**/*',
-            '!./src/libs/knockout/**/*',
-            '!./src/libs/reflect-metadata/**/*',
-            '!./src/libs/text/**/*',
-            '!./src/libs/jquery/**/*'
+            './src/**/*.spec.ts*'
         ])
         .pipe(typescript(typescript.createProject('./tsconfig.json')))
         .pipe(babel({
@@ -75,15 +23,11 @@ gulp.task('compile-cjs', ['movelibs'], () => {
         .pipe(gulp.dest('./build/cjs'));
 });
 
-gulp.task('compile-amd', ['movelibs'], () => {
+gulp.task('compile-amd', [], () => {
     return gulp.src([
             './src/**/*.[tj]s*',
             './src/**/*.spec.ts*',
-            '!./src/libs/immutable/**/*',
-            '!./src/libs/knockout/**/*',
-            '!./src/libs/reflect-metadata/**/*',
-            '!./src/libs/text/**/*',
-            '!./src/libs/jquery/**/*'
+            '!./src/libs/**/*',
         ])
         .pipe(typescript(typescript.createProject('./tsconfig.json')))
         .pipe(babel({
@@ -125,16 +69,18 @@ gulp.task('package-wpack', ['compile-cjs','movestatic'],function() {
 
 gulp.task('package-rjs', ['compile-amd','movestatic'], () => {
     return rjs({
-            baseUrl: './build/amd/',
+            baseUrl: './',
             paths: {
-                "knockout": "./libs/knockout/knockout-latest.debug",
-                "immutable": "./libs/immutable/immutable",
-                "reflect-metadata": "./libs/reflect-metadata/reflect",
-                "text": "./libs/text/text",
-                "jquery": "./libs/jquery/jquery"
+                "knockout": "./node_modules/knockout/build/output/knockout-latest.debug",
+                "immutable": "./node_modules/immutable/dist/immutable",
+                "reflect-metadata": "./node_modules/reflect-metadata/reflect",
+                "text": "./node_modules/text/text",
+                "jquery": "./node_modules/jquery/dist/jquery",
+                "inversify": "./node_modules/inversify/dist/inversify",
+                "@reactivex/rxjs": "./node_modules/@reactivex/rxjs/dist/amd/rx.KitchenSink"
             },
             include: [
-                'main.js'
+                './build/amd/main.js'
             ],
             out: 'bundle.js'
         })

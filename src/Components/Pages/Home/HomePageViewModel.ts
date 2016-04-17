@@ -8,7 +8,7 @@ import {publish} from "../../../Intents/Intent";
 import {Keys} from "../../../Intents/Keys";
 import {Map} from "immutable";
 import state$ from "../../../Models/Model";
-import {inject, injectable} from "../../../libs/inversify/inversify.js";
+import {inject, injectable} from "inversify";
 import {INameService} from "../../../Services/INameService";
 import {IHomePageViewModel} from "./IHomePageViewModel"
 

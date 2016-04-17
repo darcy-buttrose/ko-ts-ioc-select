@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "isolatedModules": true,
-    "allowJs": true
+    "skipDefaultLibCheck": true
   },
   "exclude": [
     "node_modules"

@@ -1,12 +1,12 @@
 /**
  * Created by Darcy on 3/04/2016.
  */
-/// <reference path="../../typings/tsd.d.ts"/>
+/// <reference path="../typings.d.ts"/>
 
 import {Keys} from "../Intents/Keys";
 import {IAction} from "../Intents/IAction"
 import {intent$} from "../Intents/Intent";
-import {Observable} from "../libs/rxjs/rx.js";
+import {Observable} from "@reactivex/rxjs";
 import {Map,List} from "immutable";
 
 var initialState: Map<string,string> = Map<string,string>();

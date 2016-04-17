@@ -4,7 +4,7 @@ import {NameService} from "./Services/NameService";
 import {INameService} from "./Services/INameService";
 import {IHomePageViewModel} from "./Components/Pages/Home/IHomePageViewModel"
 import {HomePageViewModel} from "./Components/Pages/Home/HomePageViewModel"
-import {Kernel} from "./libs/inversify/inversify.js";
+import {Kernel} from "inversify";
 
 var kernel = new Kernel();
 kernel.bind<INameService>("INameService").to(NameService);

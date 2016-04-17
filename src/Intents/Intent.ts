@@ -1,10 +1,10 @@
 /**
  * Created by Darcy on 3/04/2016.
  */
-/// <reference path="../../typings/tsd.d.ts"/>
+/// <reference path="../typings.d.ts"/>
 import {Keys} from "./Keys";
 import {IAction} from "./IAction";
-import {Observable} from "../libs/rxjs/rx.js";
+import {Observable,Subject} from "@reactivex/rxjs";
 import {Map} from "immutable";
 
 var subject: Subject<IAction> = new Subject<IAction>();
